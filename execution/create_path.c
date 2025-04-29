@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 07:25:17 by cmontaig          #+#    #+#             */
-/*   Updated: 2025/04/29 14:07:10 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/04/30 00:10:20 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

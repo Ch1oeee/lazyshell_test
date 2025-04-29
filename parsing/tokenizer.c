@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skock <skock@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:18:40 by skock             #+#    #+#             */
-/*   Updated: 2025/04/05 15:19:28 by skock            ###   ########.fr       */
+/*   Updated: 2025/04/29 23:48:35 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	ft_cmd(t_ms *minishell)
 {
 	fill_cmd_lst(minishell);
 	cut_weird(minishell->cmd_list);
-	exec_line(minishell);
+	// exec_line(minishell);
 }
 
 int	parsing_input(char *input, t_ms *minishell)

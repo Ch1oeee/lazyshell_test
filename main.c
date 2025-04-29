@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:43:47 by skock             #+#    #+#             */
-/*   Updated: 2025/04/29 16:00:06 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/04/29 23:46:04 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,97 +45,88 @@ void	prompt(t_ms *minishell)
 		if (input && *input)
 			add_history(input);
 		if (minishell->cmd_list)
-			exec_line(minishell);
+			execute_pipeline(minishell);
 		free(input);
 	}
 }
 
 //add-on chloe
 
-// int	execute_builtin(t_cmd *cmd, t_ms *minishell)
-// {
-// 	char *cmd_name;
-
-// 	if (!cmd || !cmd->token)
-// 		return (0);
-// 	cmd_name = cmd->token->value;
-// 	if (!ft_strcmp(cmd_name, "echo"))
-// 		print_echo(cmd);
-// 	else if (!ft_strcmp(cmd_name, "pwd"))
-// 		print_pwd();
-// 	else if (!ft_strcmp(cmd_name, "env"))
-// 		print_env(minishell);
-// 	else if (!ft_strcmp(cmd_name, "cd"))
-// 		cd(cmd, minishell);
-// 	else if (!ft_strcmp(cmd_name, "exit"))
-// 		ft_exit(cmd, minishell);
-// 	else if (!ft_strcmp(cmd_name, "export"))
-// 		ft_export(minishell, cmd);
-// 	else if (!ft_strcmp(cmd_name, "unset"))
-// 		ft_unset(minishell, cmd);
-// 	else
-// 		return (0);
-// 	return (1);
-// }
-
-
-int	execute_builtin(t_ms *minishell, char **args)
+int	create_token_chain(t_token *first_token, char **args)
 {
-	t_cmd	temp_cmd;
-	t_token	first_token;
 	t_token	*current;
-	int	result;
-	
-	current = &first_token;
-	if (!args || !args[0])
-		return (1);
-	temp_cmd.path = NULL;
-	temp_cmd.infile_fd = -2;
-	temp_cmd.outfile_fd = -2;
-	temp_cmd.is_pipe = false;
-	temp_cmd.is_redir = false;
-	temp_cmd.pid = -1;
-	temp_cmd.next = NULL;
-		
-	first_token.value = args[0];
-	first_token.is_next_space = true;
-	first_token.type = WORD;
-	first_token.index = 0;
-	first_token.next = NULL;
-		
-	for (int i = 1; args[i]; i++)
+	t_token	*new_token;
+	int		i;
+
+	current = first_token;
+	i = 1;
+	while (args[i])
 	{
-		t_token *new_token = malloc(sizeof(t_token));
+		new_token = malloc(sizeof(t_token));
 		if (!new_token)
-	   return (1);
-	   
+			return (1);
 		new_token->value = args[i];
 		new_token->is_next_space = true;
 		new_token->type = WORD;
 		new_token->index = i;
 		new_token->next = NULL;
-		
 		current->next = new_token;
 		current = new_token;
+		i++;
 	}
-	temp_cmd.token = &first_token;
-	result = 0;
+	return (0);
+}
+
+int	run_builtin_command(t_ms *minishell, t_cmd *cmd, char **args)
+{
 	if (!ft_strcmp(args[0], "echo"))
-		print_echo(&temp_cmd);
+		print_echo(cmd);
 	else if (!ft_strcmp(args[0], "cd"))
-		cd(&temp_cmd, minishell);
+		cd(cmd, minishell);
 	else if (!ft_strcmp(args[0], "pwd"))
 		print_pwd();
 	else if (!ft_strcmp(args[0], "export"))
-		ft_export(minishell, &temp_cmd);
+		ft_export(minishell, cmd);
 	else if (!ft_strcmp(args[0], "unset"))
-		ft_unset(minishell, &temp_cmd);
+		ft_unset(minishell, cmd);
 	else if (!ft_strcmp(args[0], "env"))
 		print_env(minishell);
 	else if (!ft_strcmp(args[0], "exit"))
-		ft_exit(&temp_cmd, minishell);
+		ft_exit(cmd, minishell);
 	else
-		result = 1;
+		return (1);
+	return (0);
+}
+
+int	execute_builtin(t_ms *minishell, char **args)
+{
+	t_cmd	cmd;
+	t_token	first_token;
+	t_token	*current;
+	int		result;
+
+	if (!args || !args[0])
+		return (1);
+	cmd.path = NULL;
+	cmd.infile_fd = -2;
+	cmd.outfile_fd = -2;
+	cmd.is_pipe = false;
+	cmd.is_redir = false;
+	cmd.pid = -1;
+	cmd.next = NULL;
+	
+	first_token.value = args[0];
+	first_token.is_next_space = true;
+	first_token.type = WORD;
+	first_token.index = 0;
+	first_token.next = NULL;
+	
+	if (create_token_chain(&first_token, args))
+		return (1);
+		
+	cmd.token = &first_token;
+	result = run_builtin_command(minishell, &cmd, args);
+	
 	current = first_token.next;
 	while (current)
 	{
@@ -143,7 +134,7 @@ int	execute_builtin(t_ms *minishell, char **args)
 		current = current->next;
 		free(to_free);
 	}
-		
+	
 	return (result);
 }
 

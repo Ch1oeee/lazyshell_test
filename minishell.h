@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:44:02 by skock             #+#    #+#             */
-/*   Updated: 2025/04/29 14:53:03 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/04/29 23:44:02 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,13 @@ char	*get_env_value(t_env *env, char *key);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
 void	free_array(char **array);
 void	reset_commands(t_ms *minishell);
+int		run_builtin_command(t_ms *minishell, t_cmd *temp_cmd, char **args);
+int		create_token_chain(t_token *first_token, char **args);
+int	setup_pipes(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
+int	execute_cmd(t_ms *ms, t_cmd *cmd, char **args, int *pipe_fd, int prev, int *status);
+void	update_fds(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
+int	wait_all_children(t_ms *ms, int last_pid, int last_status);
+
 
 ///////////////// BUILTIN /////////////////
 
