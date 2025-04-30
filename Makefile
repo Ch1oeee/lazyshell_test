@@ -20,6 +20,7 @@ SRCS	=	main.c\
 			parsing/expander_end.c\
 			parsing/expander_lst.c\
 			parsing/free_expand.c\
+			parsing/expand_heredoc.c\
 			execution/exec.c\
 			execution/free.c\
 			execution/create_path.c\

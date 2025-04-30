@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:34:45 by skock             #+#    #+#             */
-/*   Updated: 2025/04/30 00:10:02 by ChloeMontai      ###   ########.fr       */
+/*   Updated: 2025/04/30 14:27:59 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	execute_pipeline(t_ms *minishell)
 		if (!is_builtin(args[0]))
 		{
 			cmd->path = find_command_path(args[0], minishell->env_lst);
+			print_cmd(cmd);
 			if (!cmd->path)
 			{
 				ft_putstr_fd("minishell: command not found: ", 2);

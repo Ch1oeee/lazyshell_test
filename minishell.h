@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:44:02 by skock             #+#    #+#             */
-/*   Updated: 2025/04/29 23:44:02 by ChloeMontai      ###   ########.fr       */
+/*   Updated: 2025/04/30 13:36:04 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,15 @@ t_token	*new_expand(char *str);
 void	join_expand(t_ms *minishell, int index);
 void	expand(t_ms *minishell);
 
+// HEREDOC EXPANDER
+
+void	do_expand_heredoc(char **value, t_ms *minishell);
+void	dollar_expand_heredoc(char *value, t_ms *minishell, int *i);
+void	word_expand_heredoc(char *value, t_ms *minishell, int *i);
+void	expand_heredoc(t_ms *minishell);
+void	join_expand_heredoc(t_ms *minishell, char **heredoc, int index);
+
+
 // CLEAR
 
 char	*quote_rmv(const char *str);
@@ -148,9 +157,7 @@ t_cmd	*new_cmd(void);
 ///////////////// EXECUTION /////////////////
 
 char	**tokens_to_args(t_token *token);
-int		execute_simple_cmd(t_ms *minishell, t_cmd *cmd);
 int		execute_pipeline(t_ms *minishell);
-int		exec_line(t_ms *minishell);
 int		process_redirections(t_ms *minishell);
 char	*find_command_path(char *cmd, t_env *env);
 bool	is_builtin(char *cmd);
@@ -160,11 +167,10 @@ void	free_array(char **array);
 void	reset_commands(t_ms *minishell);
 int		run_builtin_command(t_ms *minishell, t_cmd *temp_cmd, char **args);
 int		create_token_chain(t_token *first_token, char **args);
-int	setup_pipes(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
-int	execute_cmd(t_ms *ms, t_cmd *cmd, char **args, int *pipe_fd, int prev, int *status);
+int		setup_pipes(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
+int		execute_cmd(t_ms *ms, t_cmd *cmd, char **args, int *pipe_fd, int prev, int *status);
 void	update_fds(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
-int	wait_all_children(t_ms *ms, int last_pid, int last_status);
-
+int		wait_all_children(t_ms *ms, int last_pid, int last_status);
 
 ///////////////// BUILTIN /////////////////
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:18:40 by skock             #+#    #+#             */
-/*   Updated: 2025/04/29 23:48:35 by ChloeMontai      ###   ########.fr       */
+/*   Updated: 2025/04/30 13:40:59 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,61 @@ void	ft_cmd(t_ms *minishell)
 {
 	fill_cmd_lst(minishell);
 	cut_weird(minishell->cmd_list);
-	// exec_line(minishell);
+}
+
+char	**malloc_file(char *filepath)
+{
+	int		fd;
+	int		i;
+	char	**lines;
+	char	*line;
+	char	**tmp;
+
+	fd = open(filepath, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+
+	lines = malloc(sizeof(char *) * 1);
+	if (!lines)
+		return (NULL);
+
+	lines[0] = NULL;
+
+	i = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		tmp = malloc(sizeof(char *) * (i + 2));
+		if (!tmp)
+			return (NULL);
+
+		int j = 0;
+		while (j < i)
+		{
+			tmp[j] = lines[j];
+			j++;
+		}
+
+		tmp[i] = line;
+		tmp[i + 1] = NULL;
+
+		free(lines);
+		lines = tmp;
+
+		i++;
+		line = get_next_line(fd);
+	}
+
+	close(fd);
+	return (lines);
 }
 
 int	parsing_input(char *input, t_ms *minishell)
 {
 	int	i;
-
+	minishell->expand = NULL;
 	minishell->token = NULL;
+
 	i = 0;
 	i = 0;
 	while (input[i])

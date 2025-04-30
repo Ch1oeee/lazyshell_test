@@ -6,7 +6,7 @@
 /*   By: skock <skock@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 19:00:38 by skock             #+#    #+#             */
-/*   Updated: 2025/04/02 19:00:53 by skock            ###   ########.fr       */
+/*   Updated: 2025/04/10 06:59:13 by skock            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ void	cut_weird(t_cmd *cmd)
 {
 	t_cmd	*tmp_cmd;
 	t_token	*tmp_token;
-	int		i;
 
-	i = 1;
 	tmp_cmd = cmd;
 	while (tmp_cmd)
 	{
