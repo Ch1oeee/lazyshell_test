@@ -26,6 +26,7 @@ SRCS	=	main.c\
 			execution/create_path.c\
 			execution/exec_utils.c\
 			execution/exec_redirection.c\
+			execution/heredoc.c\
 			builtin/env.c\
 			builtin/pwd.c\
 			builtin/cd.c\

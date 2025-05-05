@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:43:47 by skock             #+#    #+#             */
-/*   Updated: 2025/04/30 13:21:31 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:10:11 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ void	prompt(t_ms *minishell)
 			print_error_message("error");
 		if (input && *input)
 			add_history(input);
+		if (setup_heredocs(minishell->cmd_list) < 0) //
+		{
+			print_error_message("heredoc failed");
+			free(input);
+			free_env(minishell);
+			free(minishell);
+			exit(1);
+		}
 		if (minishell->cmd_list)
 			execute_pipeline(minishell);
 		free(input);
@@ -157,6 +165,7 @@ int	main(int ac, char **av, char **envp)
 		minishell->envp = envp;
 		minishell->is_next_space = false;
 		fill_env_cpy(minishell, envp);
+		// print_cmd(minishell->cmd_list); //
 		prompt(minishell);
 		// exec_line(minishell);
 		return (0);

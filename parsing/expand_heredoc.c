@@ -27,7 +27,6 @@ void	join_expand_heredoc(t_ms *minishell, char **heredoc, int index)
 	free(word_expand);
 }
 
-
 void	expand_heredoc(t_ms *minishell)
 {
 	t_env	*tmp_env;

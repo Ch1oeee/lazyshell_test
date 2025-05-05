@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:44:02 by skock             #+#    #+#             */
-/*   Updated: 2025/04/30 13:36:04 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:09:03 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_cmd
 	char			*path;
 	int				infile_fd;
 	int				outfile_fd;
+	int				heredoc_fd; //
 	bool			is_pipe; //
 	bool			is_redir; //
 	pid_t			pid;
@@ -171,6 +172,12 @@ int		setup_pipes(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
 int		execute_cmd(t_ms *ms, t_cmd *cmd, char **args, int *pipe_fd, int prev, int *status);
 void	update_fds(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
 int		wait_all_children(t_ms *ms, int last_pid, int last_status);
+void handle_redirections(t_cmd *cmd, int prev_pipe, int *pipe_fd);
+
+// HEREDOC //
+
+int	create_heredoc(char *limiter);
+int	setup_heredocs(t_cmd *cmd_list);
 
 ///////////////// BUILTIN /////////////////
 
