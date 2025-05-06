@@ -6,7 +6,7 @@
 /*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:44:02 by skock             #+#    #+#             */
-/*   Updated: 2025/05/05 23:09:03 by ChloeMontai      ###   ########.fr       */
+/*   Updated: 2025/05/06 09:10:00 by ChloeMontai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,13 @@ int		execute_cmd(t_ms *ms, t_cmd *cmd, char **args, int *pipe_fd, int prev, int 
 void	update_fds(t_cmd *cmd, int *pipe_fd, int *prev_pipe);
 int		wait_all_children(t_ms *ms, int last_pid, int last_status);
 void handle_redirections(t_cmd *cmd, int prev_pipe, int *pipe_fd);
+
+int execute_pipeline(t_ms *minishell);
+int handle_command(t_ms *ms, t_cmd *cmd, int pipe_fd[2], int *prev_pipe, int *status);
+int handle_empty_cmd(t_cmd *cmd, int *prev_pipe, int pipe_fd[2]);
+void print_cmd_not_found(char *cmd);
+void cleanup_pipes(t_cmd *cmd, int pipe_fd[2], int *prev_pipe);
+
 
 // HEREDOC //
 
