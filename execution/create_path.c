@@ -6,7 +6,7 @@
 /*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 07:25:17 by cmontaig          #+#    #+#             */
-/*   Updated: 2025/04/30 13:20:07 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/05/10 06:00:25 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*find_command_path(char *cmd, t_env *env)
 			free_array(paths);
 			return (NULL);
 		}
-		
 		if (access(full_path, F_OK | X_OK) == 0)
 		{
 			free_array(paths);

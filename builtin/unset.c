@@ -6,7 +6,7 @@
 /*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:38:16 by cmontaig          #+#    #+#             */
-/*   Updated: 2025/04/25 22:10:04 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:19:23 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	ft_unset(t_ms *ms, t_cmd *cmd)
 	while (arg)
 	{
 		if (arg->type == WORD && valid_name(arg->value))
-		{
-			ft_printf("unset worked\n");
 			unset_var(ms, arg->value);
-		}
 		else if (arg->type == WORD)
 		{
 			ft_putstr_fd("unset: `", STDERR_FILENO);

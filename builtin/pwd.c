@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skock <skock@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 12:58:35 by skock             #+#    #+#             */
-/*   Updated: 2025/03/12 15:31:46 by skock            ###   ########.fr       */
+/*   Updated: 2025/05/06 15:21:41 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_pwd(void)
 
 	path = getcwd(NULL, 0);
 	if (path)
-		printf("%s\n", path);
+		ft_printf("%s\n", path);
 	else
 		perror("getcwd");
 }

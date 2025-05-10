@@ -3,18 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ChloeMontaigut <ChloeMontaigut@student.    +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:43:47 by skock             #+#    #+#             */
-/*   Updated: 2025/05/05 23:10:11 by ChloeMontai      ###   ########.fr       */
+/*   Updated: 2025/05/10 05:17:55 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error_message(const char *msg)
+void	print_error_message(const char *msg, t_ms *minishell)
 {
-	printf("%s\n", msg);
+	char	*special;
+
+	if (minishell->first_special != 69 && minishell->second_special != 69)
+	{
+		if (minishell->second_special == HEREDOC)
+			special = ft_strdup("<<");
+		if (minishell->second_special == APPEND)
+			special = ft_strdup(">>");
+		if (minishell->second_special == REDIR_IN)
+			special = ft_strdup("<");
+		if (minishell->second_special == REDIR_OUT)
+			special = ft_strdup(">");
+		if (minishell->second_special == PIPE)
+			special = ft_strdup("|");
+		ft_printf("syntax error near unexpected token '%s'\n", special);
+	}
+	else
+		ft_printf("%s\n", msg);
+	// minishell->go_cmd == false;
 }
 
 void	prompt(t_ms *minishell)
@@ -35,25 +53,32 @@ void	prompt(t_ms *minishell)
 		free(full_prompt);
 		if (!input)
 		{
-			printf("CTRL + D\n");
+			ft_printf("CTRL + D\n");
 			free_env(minishell);
 			free(minishell);
 			exit(0);
 		}
 		if (!parsing_input(input, minishell))
-			print_error_message("error");
+ 		{
+ 			print_error_message("error", minishell);
+ 			continue;
+ 		}
 		if (input && *input)
 			add_history(input);
-		if (setup_heredocs(minishell->cmd_list) < 0) //
+		if (setup_heredocs(minishell->cmd_list, minishell) < 0)
 		{
-			print_error_message("heredoc failed");
+			print_error_message("heredoc failed", minishell);
 			free(input);
 			free_env(minishell);
 			free(minishell);
 			exit(1);
 		}
 		if (minishell->cmd_list)
+		{
 			execute_pipeline(minishell);
+			free_cmd_list(minishell->cmd_list);
+			minishell->cmd_list = NULL;
+		}
 		free(input);
 	}
 }
@@ -87,6 +112,8 @@ int	create_token_chain(t_token *first_token, char **args)
 
 int	run_builtin_command(t_ms *minishell, t_cmd *cmd, char **args)
 {
+	int	result = 0;
+	
 	if (!ft_strcmp(args[0], "echo"))
 		print_echo(cmd);
 	else if (!ft_strcmp(args[0], "cd"))
@@ -94,7 +121,7 @@ int	run_builtin_command(t_ms *minishell, t_cmd *cmd, char **args)
 	else if (!ft_strcmp(args[0], "pwd"))
 		print_pwd();
 	else if (!ft_strcmp(args[0], "export"))
-		ft_export(minishell, cmd);
+		result = ft_export(minishell, cmd);
 	else if (!ft_strcmp(args[0], "unset"))
 		ft_unset(minishell, cmd);
 	else if (!ft_strcmp(args[0], "env"))
@@ -102,8 +129,9 @@ int	run_builtin_command(t_ms *minishell, t_cmd *cmd, char **args)
 	else if (!ft_strcmp(args[0], "exit"))
 		ft_exit(cmd, minishell);
 	else
-		return (1);
-	return (0);
+		return (minishell->status = 1, 1);
+	minishell->status = result;
+	return (result);
 }
 
 int	execute_builtin(t_ms *minishell, char **args)
@@ -122,7 +150,7 @@ int	execute_builtin(t_ms *minishell, char **args)
 	cmd.is_redir = false;
 	cmd.pid = -1;
 	cmd.next = NULL;
-	
+
 	first_token.value = args[0];
 	first_token.is_next_space = true;
 	first_token.type = WORD;
@@ -142,7 +170,6 @@ int	execute_builtin(t_ms *minishell, char **args)
 		current = current->next;
 		free(to_free);
 	}
-	
 	return (result);
 }
 
@@ -162,12 +189,23 @@ int	main(int ac, char **av, char **envp)
 	if (ac == 1)
 	{
 		minishell = malloc(sizeof(t_ms));
+		if (!minishell)
+			return (1);
 		minishell->envp = envp;
 		minishell->is_next_space = false;
+		minishell->first_special = 69;
+		minishell->second_special = 69;
+		minishell->status = 0;
+		minishell->go_cmd = true;
+		minishell->token = NULL;
+		minishell->expand = NULL;
+		minishell->cmd_list = NULL;
+		minishell->pipe_fd[0] = -1;
+		minishell->pipe_fd[1] = -1;
 		fill_env_cpy(minishell, envp);
-		// print_cmd(minishell->cmd_list); //
 		prompt(minishell);
 		// exec_line(minishell);
+		free_minishell(minishell);
 		return (0);
 	}
 	return (1);

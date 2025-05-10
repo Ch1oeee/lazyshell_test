@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skock <skock@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:16:51 by skock             #+#    #+#             */
-/*   Updated: 2025/04/04 14:36:13 by skock            ###   ########.fr       */
+/*   Updated: 2025/05/06 15:22:29 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	double_quote(char *input, int *i, t_ms *minishell)
 	while (input[*i] && input[*i] != 34)
 		(*i)++;
 	if (!input[*i])
-		return (printf("unclosed quote : "), 0);
+		return (ft_printf("unclosed quote : "), 0);
 	token = ft_substr(input, start, (*i - start) + 1);
 	if (input[(*i) + 1] != ' ' && input[(*i) + 1] != '\0')
 		minishell->is_next_space = true;
@@ -40,7 +40,7 @@ int	single_quote(char *input, int *i, t_ms *minishell)
 	while (input[*i] && input[*i] != 39)
 		(*i)++;
 	if (!input[*i])
-		return (printf("unclosed quote : "), 0);
+		return (ft_printf("unclosed quote : "), 0);
 	token = ft_substr(input, start, (*i - start) + 1);
 	if (input[(*i) + 1] != ' ' && input[(*i) + 1] != '\0')
 		minishell->is_next_space = true;

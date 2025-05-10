@@ -6,7 +6,7 @@
 /*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:20:02 by skock             #+#    #+#             */
-/*   Updated: 2025/04/10 17:01:57 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:22:45 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	print_cmd(t_cmd *cmd)
 		{
 			printf("token value = |   |%s|   |\n", tmp_token->value);
 			printf("token type = %d\n", tmp_token->type);
+			printf("index token = %d\n", tmp_token->index);
 			printf("\n\n");
 			tmp_token = tmp_token->next;
 		}

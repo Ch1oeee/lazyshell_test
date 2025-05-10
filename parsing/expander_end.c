@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_end.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skock <skock@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:21:35 by skock             #+#    #+#             */
-/*   Updated: 2025/04/05 15:26:49 by skock            ###   ########.fr       */
+/*   Updated: 2025/05/06 15:22:09 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	print_expand(t_ms *minishell)
 	tmp = minishell->expand;
 	while (tmp)
 	{
-		printf("node = %s|\n", tmp->value);
+		ft_printf("node = %s|\n", tmp->value);
 		tmp = tmp->next;
 	}
 }

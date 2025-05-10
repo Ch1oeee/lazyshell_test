@@ -6,7 +6,7 @@
 /*   By: cmontaig <cmontaig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 02:26:26 by cmontaig          #+#    #+#             */
-/*   Updated: 2025/04/30 13:18:42 by cmontaig         ###   ########.fr       */
+/*   Updated: 2025/05/10 05:17:24 by cmontaig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	free_cmd_list(t_cmd *cmd)
 		tmp = cmd->next;
 		free_token_list(cmd->token);
 		free(cmd->path);
-		if (cmd->infile_fd != -1)
+		if (cmd->infile_fd != -2)
 			close(cmd->infile_fd);
-		if (cmd->outfile_fd != -1)
+		if (cmd->outfile_fd != -2)
 			close(cmd->outfile_fd);
 		free(cmd);
 		cmd = tmp;

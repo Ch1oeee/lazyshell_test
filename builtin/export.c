@@ -49,6 +49,7 @@ void	export_set_var(t_ms *ms, char *arg)
 int	env_update_or_add(t_env **env_lst, char *key, char *value)
 {
 	t_env	*current;
+	t_ms	*ms = NULL;
 
 	current = *env_lst;
 	while (current)
@@ -66,7 +67,7 @@ int	env_update_or_add(t_env **env_lst, char *key, char *value)
 	}
 	current = malloc(sizeof(t_env));
 	if (current == NULL)
-		return (1);
+		return (ms->status = 1, 1);
 		
 	current->key = ft_strdup(key);
 	if (value != NULL)
@@ -95,7 +96,6 @@ void	update_envp(t_ms *ms)
 	ms->envp = malloc(sizeof(char *) * (count + 1));
 	if (!ms->envp)
 		return;
-		
 	env = ms->env_lst;
 	i = 0;
 	while (env)
@@ -192,7 +192,7 @@ char	*concat_env_var(char *key, char *value)
 	return result;
 }
 
-void	ft_export(t_ms *ms, t_cmd *cmd)
+int	ft_export(t_ms *ms, t_cmd *cmd)
 {
 	t_token	*arg;
 	char	*equal_sign;
@@ -203,7 +203,7 @@ void	ft_export(t_ms *ms, t_cmd *cmd)
 	if (!arg)
 	{
 		export_print_sorted(ms->env_lst);
-		return;
+		return (ms->status = 1, 1);
 	}
 	while (arg)
 	{
@@ -219,8 +219,8 @@ void	ft_export(t_ms *ms, t_cmd *cmd)
 				ft_putstr_fd("export: `", STDERR_FILENO);
 				ft_putstr_fd(arg->value, STDERR_FILENO);
 				ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-				ms->status = 1;
 				free(key);
+				return (ms->status = 1, 1);
 			}
 			else
 			{
@@ -231,4 +231,5 @@ void	ft_export(t_ms *ms, t_cmd *cmd)
 		arg = arg->next;
 	}
 	update_envp(ms);
+	return (ms->status);
 }
